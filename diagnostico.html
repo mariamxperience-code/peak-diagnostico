@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Gratuito | Método PEAK · mxperience360</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --card: #161616;
+    --accent: #2dd4bf;
+    --text: #f0ede8;
+    --muted: #888880;
+    --border: #222222;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.9);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--text); text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  /* QUIZ */
+  .quiz-section {
+    padding: 4rem 1.5rem 6rem;
+    min-height: calc(100vh - 60px);
+    display: flex; align-items: flex-start; justify-content: center;
+  }
+  .quiz-wrap { width: 100%; max-width: 680px; }
+
+  .quiz-header { text-align: center; margin-bottom: 3rem; }
+  .section-label {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.8rem; display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 900; line-height: 1.15;
+  }
+
+  .progress-bar-wrap {
+    background: var(--border); border-radius: 100px;
+    height: 3px; margin-bottom: 0.6rem; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--accent);
+    border-radius: 100px; width: 12.5%;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); text-align: right; margin-bottom: 2.5rem;
+  }
+
+  .question-block { display: none; }
+  .question-block.active { display: block; }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 700; line-height: 1.3; margin-bottom: 1.8rem;
+  }
+
+  .options-grid { display: flex; flex-direction: column; gap: 0.8rem; }
+  .option-btn {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    text-align: left; cursor: pointer; border-radius: 4px;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .option-btn::before {
+    content: ''; display: block; flex-shrink: 0;
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--muted);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .option-btn:hover { border-color: var(--accent); background: rgba(45,212,191,0.05); }
+  .option-btn:hover::before { border-color: var(--accent); }
+  .option-btn.selected { border-color: var(--accent); background: rgba(45,212,191,0.08); }
+  .option-btn.selected::before { background: var(--accent); border-color: var(--accent); }
+
+  .quiz-nav {
+    display: flex; justify-content: space-between;
+    margin-top: 2rem; align-items: center;
+  }
+  .quiz-nav-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 0.8rem 1.8rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    letter-spacing: 0.08em; cursor: pointer; border-radius: 4px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .quiz-nav-btn:hover { border-color: var(--text); color: var(--text); }
+  .quiz-nav-btn.next-btn {
+    background: var(--accent); border-color: var(--accent);
+    color: #0a0a0a; font-weight: 500;
+  }
+  .quiz-nav-btn.next-btn:hover { opacity: 0.88; }
+  .quiz-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* RESULTS */
+  .results-block { display: none; text-align: center; padding: 1rem 0; }
+  .results-block.active { display: block; }
+
+  .score-ring {
+    width: 140px; height: 140px; border-radius: 50%;
+    border: 3px solid var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 2rem; position: relative;
+  }
+  .score-ring::before {
+    content: ''; position: absolute; inset: -3px;
+    border-radius: 50%; border: 3px solid transparent;
+    border-color: var(--accent) var(--accent) transparent transparent;
+    transform: rotate(var(--deg, 45deg));
+    transition: transform 0.8s ease;
+  }
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 900; line-height: 1;
+  }
+  .score-max { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+  .results-level {
+    display: inline-block;
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border: 1px solid var(--accent);
+    color: var(--accent); border-radius: 100px; margin-bottom: 1.2rem;
+  }
+  .results-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem;
+  }
+  .results-text {
+    font-size: 0.95rem; color: var(--muted);
+    line-height: 1.7; max-width: 45ch;
+    margin: 0 auto 2rem;
+  }
+  .results-cta {
+    display: inline-block; padding: 1rem 2.5rem;
+    background: var(--accent); color: #0a0a0a;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; border-radius: 4px;
+    transition: opacity 0.2s;
+  }
+  .results-cta:hover { opacity: 0.88; }
+  .results-note {
+    font-size: 0.78rem; color: var(--muted);
+    margin-bottom: 1.5rem; line-height: 1.6;
+  }
+  .results-sub {
+    font-size: 0.72rem; color: #444; margin-top: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://mariamxperience.github.io/peak-diagnostico" class="nav-logo">mx<span>perience</span>360</a>
+</nav>
+
+<section class="quiz-section">
+  <div class="quiz-wrap">
+
+    <div class="quiz-header">
+      <span class="section-label">Diagnóstico gratuito · Método PEAK</span>
+      <h2 class="section-title">8 preguntas que cambian<br>la perspectiva de tu centro</h2>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <p class="progress-label" id="progress-label">Pregunta 1 de 8</p>
+
+    <div class="question-block active" data-q="0">
+      <p class="question-text">¿Tienes definido el margen neto mensual de tu centro?</p>
+      <div class="options-grid">
+        <button class="option-btn" data-val="1">No sé cuál es exactamente</button>
+        <button class="option-btn" data-val="2">Lo calculo, pero no de forma sistemática</button>
+        <button class="option-btn" data-val="3">Sí, lo reviso cada mes</button>
+        <button class="option-btn" data-val="4">Sí, y tomo decisiones en base a él</button>
+      </div>
+    </div>
+
+    <div class="question-block" data-q="1">
+      <p class="question-text">¿Cuál es tu principal canal de captación de nuevos clientes?</p>
+      <div class="options-grid">
+        <button class="option-btn" data-val="1">El boca a boca exclusivamente</button>
+        <button class="option-btn" data-val="2">Redes sociales sin estrategia clara</button>
+        <button class="option-btn" data-val="3">Tengo algunos canales activos</button>
+        <button class="option-btn" data-val="4">Sistema de captación definido y medible</button>
+      </div>
+    </div>
+
+    <div class="question-block" data-q="2">
+      <p class="question-text">¿Tu centro puede funcionar bien sin tu presencia diaria?</p>
+      <div class="options-grid">
+        <button class="option-btn" data-val="1">No, todo depende de mí</button>
+        <button class="option-btn" data-val="2">Más o menos, con muchos WhatsApps</button>
+        <button class="option-btn" data-val="3">Parcialmente, hay procesos documentados</button>
+        <button class="option-btn" data-val="4">Sí, el equipo funciona de forma autónoma</button>
+      </div>
+    </div>
+
+    <div class="question-block" data-q="3">
+      <p class="question-text">¿Cómo describirías la retención de tus clientes?</p>
+      <div class="options-grid">
+        <button class="option-btn" data-val="1">Mucha rotación, no sé por qué se van</button>
+        <button class="option-btn" data-val="2">Alta, pero tampoco la mido</button>
+        <button class="option-btn" data-val="3">La mido y tengo alguna iniciativa de fidelización</button>
+        <button class="option-btn" data-val="4">Excelente, con sistema de fidelización activo</button>
+      </div>
+    </div>
+
+    <div class="question-block" data-q="4">
+      <p class="question-text">¿Tienes una propuesta de valor diferenciada de la competencia?</p>
+      <div class="options-grid">
+        <button class="option-btn" data-val="1">No, competimos básicamente en precio</button>
+        <button class="option-btn" data-val="2">Algo, pero no está bien comunicada</button>
+        <button class="option-btn" data-val="3">Sí, aunque podría estar más definida</button>
+        <button class="option-btn" data-val="4">Muy clara, y nuestros clientes lo perciben</button>
+      </div>
+    </div>
+
+    <div class="question-block" data-q="5">
+      <p class="question-text">¿Cuántos años lleva abierto tu centro?</p>
+      <div class="options-grid">
+        <button class="option-btn" data-val="1">Menos de 1 año</button>
+        <button class="option-btn" data-val="2">Entre 1 y 3 años</button>
+        <button class="option-btn" data-val="3">Entre 3 y 7 años</button>
+        <button class="option-btn" data-val="4">Más de 7 años</button>
+      </div>
+    </div>
+
+    <div class="question-block" data-q="6">
+      <p class="question-text">¿Cuántos empleados o colaboradores tiene tu centro?</p>
+      <div class="options-grid">
+        <button class="option-btn" data-val="1">Solo yo (o con autónomos puntuales)</button>
+        <button class="option-btn" data-val="2">2 a 4 personas</button>
+        <button class="option-btn" data-val="3">5 a 10 personas</button>
+        <button class="option-btn" data-val="4">Más de 10 personas</button>
+      </div>
+    </div>
+
+    <div class="question-block" data-q="7">
+      <p class="question-text">¿Qué es lo que más te frena para crecer ahora mismo?</p>
+      <div class="options-grid">
+        <button class="option-btn" data-val="1">Falta de tiempo — estoy desbordado/a</button>
+        <button class="option-btn" data-val="2">No sé cómo captar más clientes</button>
+        <button class="option-btn" data-val="3">Problemas con el equipo o la operación</button>
+        <button class="option-btn" data-val="4">Falta de estrategia y visión clara</button>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-block" id="quiz-results">
+      <div class="score-ring" id="score-ring">
+        <span class="score-num" id="score-display">0</span>
+        <span class="score-max">de 32</span>
+      </div>
+      <div class="results-level" id="results-level">Calculando…</div>
+      <h3 class="results-title" id="results-title">—</h3>
+      <p class="results-text" id="results-text">—</p>
+      <p class="results-note">
+        Tu diagnóstico está listo. El siguiente paso es una sesión gratuita de 30 minutos conmigo para ver cómo aplicarlo en tu centro.
+      </p>
+      <a href="https://calendly.com/mariamxperience/metodo-peak" target="_blank" class="results-cta">
+        📅 Agendar mi sesión gratuita →
+      </a>
+      <p class="results-sub">Gratis · 30 minutos · Sin compromiso</p>
+    </div>
+
+    <div class="quiz-nav" id="quiz-nav">
+      <button class="quiz-nav-btn" id="prev-btn" disabled>← Anterior</button>
+      <button class="quiz-nav-btn next-btn" id="next-btn" disabled>Siguiente →</button>
+    </div>
+
+  </div>
+</section>
+
+<script>
+const questions = document.querySelectorAll('.question-block');
+const nextBtn = document.getElementById('next-btn');
+const prevBtn = document.getElementById('prev-btn');
+const progressFill = document.getElementById('progress-fill');
+const progressLabel = document.getElementById('progress-label');
+const quizNav = document.getElementById('quiz-nav');
+const quizResults = document.getElementById('quiz-results');
+let currentQ = 0;
+let answers = new Array(8).fill(null);
+
+function updateProgress() {
+  progressFill.style.width = ((currentQ + 1) / 8 * 100) + '%';
+  progressLabel.textContent = 'Pregunta ' + (currentQ + 1) + ' de 8';
+}
+
+function showQuestion(idx) {
+  questions.forEach(function(q) { q.classList.remove('active'); });
+  if (idx < 8) {
+    questions[idx].classList.add('active');
+    quizResults.classList.remove('active');
+    quizNav.style.display = 'flex';
+  } else {
+    quizResults.classList.add('active');
+    quizNav.style.display = 'none';
+    showResults();
+  }
+  prevBtn.disabled = idx === 0;
+  nextBtn.disabled = answers[idx] === null;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+questions.forEach(function(q, qi) {
+  q.querySelectorAll('.option-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      q.querySelectorAll('.option-btn').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      answers[qi] = parseInt(btn.dataset.val);
+      nextBtn.disabled = false;
+    });
+  });
+});
+
+nextBtn.addEventListener('click', function() {
+  if (answers[currentQ] === null) return;
+  currentQ++;
+  showQuestion(currentQ);
+});
+prevBtn.addEventListener('click', function() {
+  if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+});
+
+const levels = [
+  { min: 8, max: 15, label: 'Nivel Base', title: 'Tu centro necesita cimientos sólidos', text: 'Tienes el potencial, pero aún no tienes los sistemas básicos que hacen crecer un negocio. El Método PEAK empieza exactamente aquí: poniendo orden y creando la base desde la que escalar.' },
+  { min: 16, max: 22, label: 'Nivel Crecimiento', title: 'Estás en el momento clave', text: 'Tienes la base pero hay fricciones importantes que frenan tu rentabilidad. Este es el punto donde más impacto tiene intervenir: pequeños cambios estructurales con grandes resultados.' },
+  { min: 23, max: 28, label: 'Nivel Consolidación', title: 'Buen trabajo. Hora de escalar', text: 'Tu negocio funciona bien. El siguiente paso es dejar de depender de ti en el día a día y construir sistemas que te permitan crecer sin trabajar más horas.' },
+  { min: 29, max: 32, label: 'Nivel Referente', title: 'Eres un referente en tu sector', text: 'Tienes un negocio sólido y bien gestionado. Te acompañamos a definir la estrategia de los próximos 3 años y abrir nuevas líneas de ingresos.' }
+];
+
+function showResults() {
+  const total = answers.reduce(function(a, b) { return a + (b || 0); }, 0);
+  document.getElementById('score-display').textContent = total;
+  const level = levels.find(function(l) { return total >= l.min && total <= l.max; }) || levels[0];
+  document.getElementById('results-level').textContent = level.label;
+  document.getElementById('results-title').textContent = level.title;
+  document.getElementById('results-text').textContent = level.text;
+  const deg = 45 + (total / 32) * 270;
+  document.getElementById('score-ring').style.setProperty('--deg', deg + 'deg');
+  progressFill.style.width = '100%';
+  progressLabel.textContent = 'Diagnostico completo';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+updateProgress();
+</script>
+</body>
+</html>
