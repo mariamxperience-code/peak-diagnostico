@@ -241,25 +241,31 @@
             const telefono = document.getElementById('telefono').value;
             const tipo_centro = document.getElementById('tipo_centro').value;
 
-            // Guardar en array de leads
-            let leads = JSON.parse(localStorage.getItem('peak_leads') || '[]');
-            leads.push({
-                nombre: nombre,
-                telefono: telefono,
-                tipo_centro: tipo_centro,
-                fecha: new Date().toLocaleString('es-ES')
+            // Enviar a Formspree (backend gratuito)
+            const formspreeId = 'xyzavrjd'; // ID de Formspree (será generado)
+            
+            fetch(`https://formspree.io/f/${formspreeId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombre: nombre,
+                    telefono: telefono,
+                    tipo_centro: tipo_centro
+                })
+            }).then(() => {
+                console.log('Datos enviados correctamente');
+            }).catch(err => {
+                console.log('Error al enviar:', err);
             });
-            localStorage.setItem('peak_leads', JSON.stringify(leads));
 
-            // Guardar usuario para diagnóstico
+            // Guardar en localStorage para diagnóstico personalizado
             localStorage.setItem('peak_usuario', JSON.stringify({
                 nombre: nombre,
                 telefono: telefono,
                 tipo_centro: tipo_centro
             }));
-
-            console.log('Lead guardado:', {nombre, telefono, tipo_centro});
-            console.log('Total leads:', leads.length);
 
             // Redirigir
             setTimeout(() => {
