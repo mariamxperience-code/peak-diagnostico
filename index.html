@@ -337,17 +337,18 @@
                     <p class="loading-text">Guardando tus datos...</p>
                 </div>
 
-                <!-- Tally oculto para guardar en Notion -->
-                <div style="display:none;visibility:hidden;">
+                <!-- Tally oculto - se rellena automáticamente -->
+                <div style="display:none;visibility:hidden;height:0;overflow:hidden;">
                     <iframe 
                         id="tallyFrame"
-                        src="https://tally.so/r/EkDvAr?transparentBackground=1" 
+                        src="about:blank" 
                         width="100%" 
                         height="0" 
                         frameborder="0" 
                         marginheight="0" 
                         marginwidth="0"
-                        title="Diagnóstico PEAK">
+                        title="Diagnóstico PEAK"
+                        allow="payment">
                     </iframe>
                 </div>
             </div>
@@ -377,13 +378,25 @@
                 tipo_centro: tipo_centro
             }));
 
-            // Enviar datos a Tally (que está conectado a Notion)
+            // Cargar Tally en el iframe y rellenarlo automáticamente
+            const tallyUrl = `https://tally.so/r/EkDvAr?nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(telefono)}&tipo_centro=${encodeURIComponent(tipo_centro)}&transparentBackground=1`;
+            
+            const tallyFrame = document.getElementById('tallyFrame');
+            tallyFrame.src = tallyUrl;
+
+            // Enviar datos a Tally vía webhook
             try {
                 await fetch('https://tally.so/api/webhooks/form/EkDvAr', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: `nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(telefono)}&tipo_centro=${encodeURIComponent(tipo_centro)}`
-                });
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        telefono: telefono,
+                        tipo_centro: tipo_centro
+                    })
+                }).catch(() => {});
             } catch (error) {
                 console.log('Datos guardados localmente');
             }
