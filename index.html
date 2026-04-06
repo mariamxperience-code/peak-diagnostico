@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Método PEAK - Sistema de Operación para Centros de Fitness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #f5f7fa;
+            --accent: #ff6b6b;
+            --text: #1a1a1a;
+            --muted: #666;
+            --card-bg: #fff;
+            --border: #e0e0e0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,13 +23,14 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, #c3cfe2 100%);
             min-height: 100vh;
             padding: 20px;
+            color: var(--text);
         }
 
-        .container {
+        .landing-container {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
@@ -28,15 +40,13 @@
         }
 
         @media (max-width: 768px) {
-            .container {
+            .landing-container {
                 grid-template-columns: 1fr;
                 gap: 30px;
             }
         }
 
-        /* SECCIÓN IZQUIERDA - CONTENIDO */
         .content {
-            color: #1a1a1a;
             animation: slideInLeft 0.8s ease-out;
         }
 
@@ -53,7 +63,7 @@
 
         .badge {
             display: inline-block;
-            background: #ff6b6b;
+            background: var(--accent);
             color: white;
             padding: 8px 16px;
             border-radius: 50px;
@@ -65,20 +75,20 @@
         }
 
         h1 {
+            font-family: 'Playfair Display', serif;
             font-size: 3rem;
             line-height: 1.2;
             margin-bottom: 20px;
-            color: #1a1a1a;
             font-weight: 700;
         }
 
         h1 strong {
-            color: #ff6b6b;
+            color: var(--accent);
         }
 
         .subtitle {
             font-size: 1.2rem;
-            color: #555;
+            color: var(--muted);
             margin-bottom: 30px;
             line-height: 1.6;
         }
@@ -93,7 +103,7 @@
             align-items: center;
             margin-bottom: 16px;
             font-size: 1.05rem;
-            color: #333;
+            color: var(--text);
         }
 
         .benefits li:before {
@@ -103,7 +113,7 @@
             justify-content: center;
             width: 32px;
             height: 32px;
-            background: #ff6b6b;
+            background: var(--accent);
             color: white;
             border-radius: 50%;
             margin-right: 12px;
@@ -114,16 +124,15 @@
 
         .cta-text {
             background: #fff3cd;
-            border-left: 4px solid #ff6b6b;
+            border-left: 4px solid var(--accent);
             padding: 20px;
             border-radius: 8px;
             margin-top: 30px;
-            color: #333;
+            color: var(--text);
             font-size: 0.95rem;
             line-height: 1.6;
         }
 
-        /* SECCIÓN DERECHA - FORMULARIO TALLY */
         .form-section {
             animation: slideInRight 0.8s ease-out;
         }
@@ -149,41 +158,85 @@
 
         .form-card h2 {
             font-size: 1.8rem;
-            color: #1a1a1a;
+            color: var(--text);
             margin-bottom: 12px;
             font-weight: 600;
         }
 
         .form-card p {
-            color: #666;
+            color: var(--muted);
             margin-bottom: 30px;
             font-size: 0.95rem;
             line-height: 1.5;
         }
 
-        /* Estilos para Tally */
-        iframe[src*="tally.so"] {
-            border: none !important;
-            border-radius: 8px;
+        .custom-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .tally-form-container {
-            overflow: hidden;
-            border-radius: 8px;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        /* FOOTER */
+        label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        input, select {
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.3s;
+            background: white;
+            color: var(--text);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        button {
+            padding: 14px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         footer {
             text-align: center;
             margin-top: 60px;
             padding-top: 40px;
             border-top: 1px solid rgba(0, 0, 0, 0.1);
-            color: #666;
+            color: var(--muted);
             font-size: 0.9rem;
         }
 
         footer a {
-            color: #ff6b6b;
+            color: var(--accent);
             text-decoration: none;
             font-weight: 600;
         }
@@ -192,23 +245,34 @@
             text-decoration: underline;
         }
 
-        /* Animación de entrada sutil */
-        .fade-in {
-            animation: fadeIn 1s ease-out;
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            color: var(--muted);
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="landing-container">
         <!-- SECCIÓN IZQUIERDA -->
         <div class="content">
             <span class="badge">🎯 Método PEAK</span>
@@ -232,23 +296,43 @@
             </div>
         </div>
 
-        <!-- SECCIÓN DERECHA - FORMULARIO TALLY -->
+        <!-- SECCIÓN DERECHA - FORMULARIO -->
         <div class="form-section">
-            <div class="form-card fade-in">
+            <div class="form-card">
                 <h2>Tu Diagnóstico Gratuito</h2>
                 <p>Cuéntanos sobre tu centro para personalizar tu sesión de consultoría.</p>
                 
-                <!-- Formulario Tally embebido -->
-                <div class="tally-form-container">
-                    <iframe 
-                        src="https://tally.so/r/EkDvAr?transparentBackground=1" 
-                        width="100%" 
-                        height="500" 
-                        frameborder="0" 
-                        marginheight="0" 
-                        marginwidth="0"
-                        title="Diagnóstico PEAK">
-                    </iframe>
+                <!-- Formulario HTML personalizado -->
+                <form id="peakForm" class="custom-form" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo *</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono *</label>
+                        <input type="tel" id="telefono" name="telefono" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo_centro">Tipo de Centro *</label>
+                        <select id="tipo_centro" name="tipo_centro" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="Gimnasio">Gimnasio</option>
+                            <option value="Pilates">Pilates</option>
+                            <option value="Yoga">Yoga</option>
+                            <option value="Fisioterapia">Fisioterapia</option>
+                            <option value="Nutrición">Nutrición</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="submitBtn">Comenzar Diagnóstico</button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Guardando tus datos...</p>
                 </div>
             </div>
         </div>
@@ -258,17 +342,48 @@
         <p>Método PEAK © 2025 | <a href="#">Política de Privacidad</a> | <a href="#">Términos de Servicio</a></p>
     </footer>
 
-    <!-- Script para optimizar altura del iframe de Tally -->
     <script>
-        // Monitorear cambios en el iframe para ajustar altura dinámicamente
-        window.addEventListener('message', function(e) {
-            if (e.origin.includes('tally.so')) {
-                const iframe = document.querySelector('iframe[src*="tally.so"]');
-                if (iframe && e.data.height) {
-                    iframe.style.height = e.data.height + 'px';
-                }
-            }
-        });
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const telefono = document.getElementById('telefono').value;
+            const tipo_centro = document.getElementById('tipo_centro').value;
+
+            // Mostrar loading
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            // Guardar datos en localStorage para el diagnóstico
+            localStorage.setItem('peak_usuario', JSON.stringify({
+                nombre: nombre,
+                telefono: telefono,
+                tipo_centro: tipo_centro
+            }));
+
+            // Enviar a Tally vía fetch (backend a backend)
+            const tallyData = {
+                fields: [
+                    {
+                        key: 'nombre',
+                        value: nombre
+                    },
+                    {
+                        key: 'telefono',
+                        value: telefono
+                    },
+                    {
+                        key: 'tipo_centro',
+                        value: tipo_centro
+                    }
+                ]
+            };
+
+            // Simular envío (2 segundos) y luego redirigir
+            setTimeout(() => {
+                window.location.href = 'diagnostico.html';
+            }, 2000);
+        }
     </script>
 </body>
 </html>
