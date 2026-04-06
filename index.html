@@ -8,12 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f5f7fa;
-            --accent: #ff6b6b;
-            --text: #1a1a1a;
-            --muted: #666;
-            --card-bg: #fff;
-            --border: #e0e0e0;
+            --bg: #0a0a0a;
+            --accent: #20c997;
+            --accent-dark: #1aa179;
+            --text: #ffffff;
+            --text-muted: #b0b0b0;
+            --card-bg: #1a1a1a;
+            --border: #2a2a2a;
         }
 
         * {
@@ -24,7 +25,7 @@
 
         body {
             font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(135deg, var(--bg) 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, var(--bg) 0%, #0d0d0d 100%);
             min-height: 100vh;
             padding: 20px;
             color: var(--text);
@@ -88,7 +89,7 @@
 
         .subtitle {
             font-size: 1.2rem;
-            color: var(--muted);
+            color: var(--text-muted);
             margin-bottom: 30px;
             line-height: 1.6;
         }
@@ -114,7 +115,7 @@
             width: 32px;
             height: 32px;
             background: var(--accent);
-            color: white;
+            color: #0a0a0a;
             border-radius: 50%;
             margin-right: 12px;
             font-weight: bold;
@@ -123,7 +124,7 @@
         }
 
         .cta-text {
-            background: #fff3cd;
+            background: rgba(32, 201, 151, 0.1);
             border-left: 4px solid var(--accent);
             padding: 20px;
             border-radius: 8px;
@@ -149,11 +150,12 @@
         }
 
         .form-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             padding: 40px;
             overflow: hidden;
+            border: 1px solid var(--border);
         }
 
         .form-card h2 {
@@ -164,7 +166,7 @@
         }
 
         .form-card p {
-            color: var(--muted);
+            color: var(--text-muted);
             margin-bottom: 30px;
             font-size: 0.95rem;
             line-height: 1.5;
@@ -195,7 +197,7 @@
             font-size: 1rem;
             font-family: 'DM Sans', sans-serif;
             transition: border-color 0.3s;
-            background: white;
+            background: #0a0a0a;
             color: var(--text);
         }
 
@@ -207,7 +209,7 @@
         button {
             padding: 14px;
             background: var(--accent);
-            color: white;
+            color: #0a0a0a;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
@@ -230,8 +232,8 @@
             text-align: center;
             margin-top: 60px;
             padding-top: 40px;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            color: var(--muted);
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
@@ -267,7 +269,7 @@
 
         .loading-text {
             margin-top: 20px;
-            color: var(--muted);
+            color: var(--text-muted);
         }
     </style>
 </head>
