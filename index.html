@@ -10,7 +10,6 @@
         :root {
             --bg: #0a0a0a;
             --accent: #20c997;
-            --accent-dark: #1aa179;
             --text: #ffffff;
             --text-muted: #b0b0b0;
             --card-bg: #1a1a1a;
@@ -31,7 +30,7 @@
             color: var(--text);
         }
 
-        .landing-container {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
@@ -41,49 +40,19 @@
         }
 
         @media (max-width: 768px) {
-            .landing-container {
+            .container {
                 grid-template-columns: 1fr;
-                gap: 30px;
             }
         }
 
-        .content {
-            animation: slideInLeft 0.8s ease-out;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .badge {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        h1 {
+        .content h1 {
             font-family: 'Playfair Display', serif;
             font-size: 3rem;
-            line-height: 1.2;
             margin-bottom: 20px;
             font-weight: 700;
         }
 
-        h1 strong {
+        .content h1 strong {
             color: var(--accent);
         }
 
@@ -104,58 +73,29 @@
             align-items: center;
             margin-bottom: 16px;
             font-size: 1.05rem;
-            color: var(--text);
         }
 
         .benefits li:before {
             content: "✓";
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
             width: 32px;
             height: 32px;
             background: var(--accent);
             color: #0a0a0a;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-right: 12px;
             font-weight: bold;
-            font-size: 1.1rem;
             flex-shrink: 0;
-        }
-
-        .cta-text {
-            background: rgba(32, 201, 151, 0.1);
-            border-left: 4px solid var(--accent);
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 30px;
-            color: var(--text);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .form-section {
-            animation: slideInRight 0.8s ease-out;
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
 
         .form-card {
             background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            padding: 40px;
-            overflow: hidden;
             border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         .form-card h2 {
@@ -169,25 +109,18 @@
             color: var(--text-muted);
             margin-bottom: 30px;
             font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .custom-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            margin-bottom: 20px;
         }
 
         label {
             font-weight: 600;
             font-size: 0.95rem;
-            color: var(--text);
         }
 
         input, select {
@@ -195,10 +128,10 @@
             border: 2px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
-            font-family: 'DM Sans', sans-serif;
-            transition: border-color 0.3s;
             background: #0a0a0a;
             color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.3s;
         }
 
         input:focus, select:focus {
@@ -207,6 +140,7 @@
         }
 
         button {
+            width: 100%;
             padding: 14px;
             background: var(--accent);
             color: #0a0a0a;
@@ -217,68 +151,33 @@
             cursor: pointer;
             transition: opacity 0.3s;
             font-family: 'DM Sans', sans-serif;
+            margin-top: 10px;
         }
 
         button:hover {
             opacity: 0.9;
         }
 
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .links {
+            margin-top: 20px;
+            text-align: center;
         }
 
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 40px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
+        .links a {
+            color: var(--accent);
+            text-decoration: none;
             font-size: 0.9rem;
         }
 
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        footer a:hover {
+        .links a:hover {
             text-decoration: underline;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 40px;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            margin-top: 20px;
-            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
-    <div class="landing-container">
-        <!-- SECCIÓN IZQUIERDA -->
+    <div class="container">
+        <!-- IZQUIERDA -->
         <div class="content">
-            <span class="badge">🎯 Método PEAK</span>
-            
             <h1>Transforma tu centro de fitness en un <strong>negocio rentable</strong></h1>
             
             <p class="subtitle">
@@ -292,20 +191,15 @@
                 <li>Sistema probado con 50+ centros</li>
                 <li>Soporte exclusivo en español</li>
             </ul>
-
-            <div class="cta-text">
-                <strong>Obtén tu diagnóstico gratuito:</strong> Completa el formulario y recibe un análisis de 30 minutos sobre cómo optimizar tu centro. Sin compromiso.
-            </div>
         </div>
 
-        <!-- SECCIÓN DERECHA - FORMULARIO -->
-        <div class="form-section">
+        <!-- DERECHA - FORMULARIO -->
+        <div>
             <div class="form-card">
                 <h2>Tu Diagnóstico Gratuito</h2>
                 <p>Cuéntanos sobre tu centro para personalizar tu sesión de consultoría.</p>
                 
-                <!-- Formulario HTML personalizado -->
-                <form id="peakForm" class="custom-form" onsubmit="handleFormSubmit(event)">
+                <form id="formPeak">
                     <div class="form-group">
                         <label for="nombre">Nombre Completo *</label>
                         <input type="text" id="nombre" name="nombre" required>
@@ -329,75 +223,49 @@
                         </select>
                     </div>
 
-                    <button type="submit" id="submitBtn">Comenzar Diagnóstico</button>
+                    <button type="submit">Comenzar Diagnóstico →</button>
                 </form>
 
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p class="loading-text">Guardando tus datos...</p>
-                </div>
-
-                <!-- Tally oculto - se rellena automáticamente -->
-                <div style="display:none;visibility:hidden;height:0;overflow:hidden;">
-                    <iframe 
-                        id="tallyFrame"
-                        src="about:blank" 
-                        width="100%" 
-                        height="0" 
-                        frameborder="0" 
-                        marginheight="0" 
-                        marginwidth="0"
-                        title="Diagnóstico PEAK"
-                        allow="payment">
-                    </iframe>
+                <div class="links">
+                    <a href="leads.html">Ver leads capturados</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>Método PEAK © 2025 | <a href="#">Política de Privacidad</a> | <a href="#">Términos de Servicio</a></p>
-    </footer>
-
     <script>
-        function handleFormSubmit(event) {
-            event.preventDefault();
+        document.getElementById('formPeak').addEventListener('submit', function(e) {
+            e.preventDefault();
 
             const nombre = document.getElementById('nombre').value;
             const telefono = document.getElementById('telefono').value;
             const tipo_centro = document.getElementById('tipo_centro').value;
 
-            // Mostrar loading
-            document.getElementById('submitBtn').style.display = 'none';
-            document.getElementById('loading').style.display = 'block';
-
-            // GUARDAR LEAD EN LOCALSTORAGE
-            const lead = {
+            // Guardar en array de leads
+            let leads = JSON.parse(localStorage.getItem('peak_leads') || '[]');
+            leads.push({
                 nombre: nombre,
                 telefono: telefono,
                 tipo_centro: tipo_centro,
-                fecha: new Date().toISOString()
-            };
+                fecha: new Date().toLocaleString('es-ES')
+            });
+            localStorage.setItem('peak_leads', JSON.stringify(leads));
 
-            const allLeads = JSON.parse(localStorage.getItem('peak_leads') || '[]');
-            allLeads.push(lead);
-            localStorage.setItem('peak_leads', JSON.stringify(allLeads));
-
-            console.log('Lead guardado:', lead);
-            console.log('Total leads:', allLeads.length);
-
-            // Guardar datos para el diagnóstico
+            // Guardar usuario para diagnóstico
             localStorage.setItem('peak_usuario', JSON.stringify({
                 nombre: nombre,
                 telefono: telefono,
                 tipo_centro: tipo_centro
             }));
 
-            // Redirigir al diagnóstico después de 2 segundos
+            console.log('Lead guardado:', {nombre, telefono, tipo_centro});
+            console.log('Total leads:', leads.length);
+
+            // Redirigir
             setTimeout(() => {
                 window.location.href = 'diagnostico.html';
-            }, 2000);
-        }
+            }, 500);
+        });
     </script>
 </body>
 </html>
