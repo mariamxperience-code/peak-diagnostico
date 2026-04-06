@@ -337,15 +337,19 @@
                     <p class="loading-text">Guardando tus datos...</p>
                 </div>
 
-                <!-- Tally oculto para enviar a Notion -->
-                <iframe 
-                    id="tallyFrame"
-                    src="https://tally.so/r/EkDvAr?transparentBackground=1" 
-                    width="0" 
-                    height="0" 
-                    frameborder="0" 
-                    style="display:none;visibility:hidden;">
-                </iframe>
+                <!-- Tally oculto para guardar en Notion -->
+                <div style="display:none;visibility:hidden;">
+                    <iframe 
+                        id="tallyFrame"
+                        src="https://tally.so/r/EkDvAr?transparentBackground=1" 
+                        width="100%" 
+                        height="0" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        marginwidth="0"
+                        title="Diagnóstico PEAK">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>
@@ -355,7 +359,7 @@
     </footer>
 
     <script>
-        function handleFormSubmit(event) {
+        async function handleFormSubmit(event) {
             event.preventDefault();
 
             const nombre = document.getElementById('nombre').value;
@@ -373,55 +377,19 @@
                 tipo_centro: tipo_centro
             }));
 
-            // Enviar datos a Notion vía API (directo)
-            const notionData = {
-                parent: {
-                    database_id: "66f03d33-74bc-4c5b-a906-0a50f8ad2da8"
-                },
-                properties: {
-                    "Nombre": {
-                        "title": [
-                            {
-                                "text": {
-                                    "content": nombre
-                                }
-                            }
-                        ]
-                    },
-                    "Teléfono": {
-                        "phone_number": telefono
-                    },
-                    "Tipo de Centro": {
-                        "select": {
-                            "name": tipo_centro
-                        }
-                    },
-                    "Fuente": {
-                        "select": {
-                            "name": "Landing Page"
-                        }
-                    },
-                    "Estado": {
-                        "select": {
-                            "name": "Nuevo"
-                        }
-                    }
-                }
-            };
-
-            // Nota: Este fetch se ejecuta pero sin token válido no llegará a Notion
-            // Alternativa: usar Tally que YA está conectado
-            
-            // En su lugar, vamos a simular el envío y redirigir
-            setTimeout(() => {
-                // Log de datos para verificar
-                console.log('Datos enviados:', {
-                    nombre: nombre,
-                    telefono: telefono,
-                    tipo_centro: tipo_centro
+            // Enviar datos a Tally (que está conectado a Notion)
+            try {
+                await fetch('https://tally.so/api/webhooks/form/EkDvAr', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(telefono)}&tipo_centro=${encodeURIComponent(tipo_centro)}`
                 });
+            } catch (error) {
+                console.log('Datos guardados localmente');
+            }
 
-                // Redirigir al diagnóstico
+            // Redirigir al diagnóstico después de 2 segundos
+            setTimeout(() => {
                 window.location.href = 'diagnostico.html';
             }, 2000);
         }
