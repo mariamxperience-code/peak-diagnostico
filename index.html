@@ -378,33 +378,43 @@
                 tipo_centro: tipo_centro
             }));
 
-            // Cargar Tally en el iframe y rellenarlo automáticamente
-            const tallyUrl = `https://tally.so/r/EkDvAr?nombre=${encodeURIComponent(nombre)}&telefono=${encodeURIComponent(telefono)}&tipo_centro=${encodeURIComponent(tipo_centro)}&transparentBackground=1`;
-            
+            // Cargar Tally en el iframe
             const tallyFrame = document.getElementById('tallyFrame');
-            tallyFrame.src = tallyUrl;
+            tallyFrame.src = 'https://tally.so/r/EkDvAr?transparentBackground=1';
 
-            // Enviar datos a Tally vía webhook
-            try {
-                await fetch('https://tally.so/api/webhooks/form/EkDvAr', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        nombre: nombre,
-                        telefono: telefono,
-                        tipo_centro: tipo_centro
-                    })
-                }).catch(() => {});
-            } catch (error) {
-                console.log('Datos guardados localmente');
-            }
-
-            // Redirigir al diagnóstico después de 2 segundos
+            // Esperar a que Tally cargue y luego rellenar
             setTimeout(() => {
+                try {
+                    const iframeDoc = tallyFrame.contentDocument || tallyFrame.contentWindow.document;
+                    
+                    // Buscar y rellenar campos en Tally
+                    const inputs = iframeDoc.querySelectorAll('input[type="text"], input[type="tel"]');
+                    const selects = iframeDoc.querySelectorAll('select');
+
+                    // Rellenar primer input (nombre)
+                    if (inputs.length > 0) inputs[0].value = nombre;
+                    
+                    // Rellenar segundo input (teléfono)
+                    if (inputs.length > 1) inputs[1].value = telefono;
+
+                    // Rellenar select (tipo de centro)
+                    if (selects.length > 0) {
+                        selects[0].value = tipo_centro;
+                    }
+
+                    // Buscar y hacer click en botón de envío
+                    const submitBtn = iframeDoc.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.click();
+                    }
+
+                } catch (error) {
+                    console.log('No se pudo rellenar Tally (CORS), pero los datos están guardados');
+                }
+
+                // Redirigir al diagnóstico
                 window.location.href = 'diagnostico.html';
-            }, 2000);
+            }, 1500);
         }
     </script>
 </body>
