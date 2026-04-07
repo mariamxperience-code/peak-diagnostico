@@ -172,6 +172,16 @@
         .links a:hover {
             text-decoration: underline;
         }
+
+        /* Estilos para iframe de Tally */
+        iframe {
+            box-shadow: 0 10px 30px rgba(32, 201, 151, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        iframe:focus {
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -199,78 +209,28 @@
                 <h2>Tu Diagnóstico Gratuito</h2>
                 <p>Cuéntanos sobre tu centro para personalizar tu sesión de consultoría.</p>
                 
-                <form id="formPeak">
-                    <div class="form-group">
-                        <label for="nombre">Nombre Completo *</label>
-                        <input type="text" id="nombre" name="nombre" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefono">Teléfono *</label>
-                        <input type="tel" id="telefono" name="telefono" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tipo_centro">Tipo de Centro *</label>
-                        <select id="tipo_centro" name="tipo_centro" required>
-                            <option value="">Selecciona una opción</option>
-                            <option value="Gimnasio">Gimnasio</option>
-                            <option value="Pilates">Pilates</option>
-                            <option value="Yoga">Yoga</option>
-                            <option value="Fisioterapia">Fisioterapia</option>
-                            <option value="Nutrición">Nutrición</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-
-                    <button type="submit">Comenzar Diagnóstico →</button>
-                </form>
-
-                <div class="links">
-                    <a href="leads.html">Ver leads capturados</a>
-                </div>
+                <!-- Tally Form Embed -->
+                <iframe 
+                    id="tallyFrame"
+                    src="https://tally.so/r/EkDvAr?transparentBackground=1" 
+                    width="100%" 
+                    height="550" 
+                    frameborder="0" 
+                    marginheight="0" 
+                    marginwidth="0"
+                    style="border-radius: 8px; display: block; opacity: 0; transition: opacity 0.6s ease-in-out;"
+                    title="Diagnóstico Gratuito - Método PEAK"
+                    allowfullscreen>
+                </iframe>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('formPeak').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const nombre = document.getElementById('nombre').value;
-            const telefono = document.getElementById('telefono').value;
-            const tipo_centro = document.getElementById('tipo_centro').value;
-
-            // Enviar a Formspree (backend gratuito)
-            const formspreeId = 'xyzavrjd'; // ID de Formspree (será generado)
-            
-            fetch(`https://formspree.io/f/${formspreeId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre: nombre,
-                    telefono: telefono,
-                    tipo_centro: tipo_centro
-                })
-            }).then(() => {
-                console.log('Datos enviados correctamente');
-            }).catch(err => {
-                console.log('Error al enviar:', err);
-            });
-
-            // Guardar en localStorage para diagnóstico personalizado
-            localStorage.setItem('peak_usuario', JSON.stringify({
-                nombre: nombre,
-                telefono: telefono,
-                tipo_centro: tipo_centro
-            }));
-
-            // Redirigir
-            setTimeout(() => {
-                window.location.href = 'diagnostico.html';
-            }, 500);
+        // Fade-in suave para el iframe de Tally
+        window.addEventListener('load', function() {
+            const frame = document.getElementById('tallyFrame');
+            frame.style.opacity = '1';
         });
     </script>
 </body>
