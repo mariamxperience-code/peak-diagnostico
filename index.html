@@ -11,36 +11,26 @@
       box-sizing: border-box;
     }
 
-    html, body {
-      width: 100%;
-      height: 100%;
+    body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #0a0a0a;
       color: #ffffff;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       padding: 20px;
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .container {
       width: 100%;
       max-width: 700px;
-    }
-
-    .header {
       text-align: center;
-      margin-bottom: 40px;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
+      font-size: 2.8rem;
+      margin-bottom: 15px;
       font-weight: 700;
     }
 
@@ -51,14 +41,14 @@
     .subtitle {
       font-size: 1.1rem;
       color: #cccccc;
+      margin-bottom: 50px;
       line-height: 1.6;
     }
 
-    .tally-embed {
-      width: 100%;
+    .tally-container {
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(28, 171, 176, 0.15);
+      box-shadow: 0 4px 20px rgba(28, 171, 176, 0.1);
     }
 
     iframe {
@@ -69,39 +59,22 @@
 
     @media (max-width: 768px) {
       h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
       }
 
       .subtitle {
         font-size: 1rem;
-      }
-
-      .header {
-        margin-bottom: 30px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>Método <span class="accent">PEAK</span></h1>
-      <p class="subtitle">Obtén tu diagnóstico gratuito y descubre cómo optimizar tu centro de fitness</p>
-    </div>
-
-    <div class="tally-embed">
-      <!-- IFRAME DE TALLY - NO MODIFICAR -->
-      <iframe 
-        src="https://tally.so/embed/EkDvAr?hideTitle=0&transparentBackground=1" 
-        width="100%" 
-        height="550" 
-        frameborder="0" 
-        marginheight="0" 
-        marginwidth="0"
-        title="Formulario de Diagnóstico - Método PEAK"
-        allowfullscreen
-        allowtransparency="true">
-      </iframe>
+    <h1>Método <span class="accent">PEAK</span></h1>
+    <p class="subtitle">Obtén tu diagnóstico gratuito y descubre cómo optimizar tu centro de fitness</p>
+    
+    <div class="tally-container">
+      <iframe src="https://tally.so/embed/EkDvAr?hideTitle=0&transparentBackground=1" width="100%" height="550" frameborder="0" marginheight="0" marginwidth="0" title="Diagnóstico PEAK" allowfullscreen allowtransparency="true"></iframe>
     </div>
   </div>
 </body>
