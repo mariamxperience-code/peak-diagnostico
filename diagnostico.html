@@ -1,439 +1,485 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Diagnóstico - Método PEAK</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --surface: #1a1a1a;
-            --card: #2a2a2a;
-            --accent: #1cabb0;
-            --text: #ffffff;
-            --text-muted: #b0b0b0;
-            --border: #3a3a3a;
-            --danger: #ff6b6b;
-            --success: #51cf66;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico - Método PEAK</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    html, body {
+      width: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(135deg, var(--bg) 0%, #0d0d0d 100%);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+    .container {
+      width: 100%;
+      max-width: 600px;
+    }
 
-        .header {
-            padding: 2rem 2rem;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-        }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
-        .header-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 700;
-        }
+    .accent {
+      color: #1cabb0;
+    }
 
-        .header-logo span {
-            color: var(--accent);
-        }
+    .progress {
+      width: 100%;
+      height: 4px;
+      background: #1a1a1a;
+      border-radius: 2px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
+    .progress-bar {
+      height: 100%;
+      background: #1cabb0;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
 
-        .diagnostic-header {
-            text-align: center;
-            margin-bottom: 4rem;
-            animation: fadeIn 0.8s ease-in;
-        }
+    form {
+      display: none;
+    }
 
-        .diagnostic-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
+    form.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
 
-        .diagnostic-title strong {
-            color: var(--accent);
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-        .diagnostic-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
+    .question-group {
+      margin-bottom: 30px;
+    }
 
-        .progress-indicator {
-            display: inline-block;
-            font-size: 0.85rem;
-            color: var(--accent);
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
+    .question-group label {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
 
-        .section {
-            margin-bottom: 4rem;
-            animation: slideIn 0.8s ease-out;
-        }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--border);
-        }
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: #1a1a1a;
+      border: 2px solid #333333;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
 
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
+    .option:hover {
+      border-color: #1cabb0;
+    }
 
-        .section-subtitle {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
+    .option input[type="radio"] {
+      margin-right: 12px;
+      cursor: pointer;
+      accent-color: #1cabb0;
+      width: 18px;
+      height: 18px;
+    }
 
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
+    .option input[type="radio"]:checked + span {
+      color: #1cabb0;
+      font-weight: 600;
+    }
 
-        .item-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+      justify-content: space-between;
+    }
 
-        .item-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), transparent);
-        }
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
 
-        .item-card:hover {
-            border-color: var(--accent);
-            background: var(--card);
-            transform: translateY(-4px);
-        }
+    button.prev {
+      background: #333333;
+      color: #ffffff;
+      flex: 0 0 auto;
+    }
 
-        .item-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
+    button.prev:hover {
+      background: #444444;
+    }
 
-        .item-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            color: var(--text);
-        }
+    button.prev:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
 
-        .item-description {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
+    button.next, button.submit {
+      background: #1cabb0;
+      color: #0a0a0a;
+      flex: 1;
+    }
 
-        .problems-section .item-card {
-            border-left: 3px solid var(--danger);
-        }
+    button.next:hover, button.submit:hover {
+      background: #15959b;
+    }
 
-        .problems-section .item-card::before {
-            background: linear-gradient(90deg, var(--danger), transparent);
-        }
+    /* Resultado */
+    .result {
+      display: none;
+      text-align: center;
+    }
 
-        .consequences-section .item-card {
-            border-left: 3px solid var(--danger);
-        }
+    .result.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
 
-        .consequences-section .item-card::before {
-            background: linear-gradient(90deg, var(--danger), transparent);
-        }
+    .result h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
 
-        .opportunities-section .item-card {
-            border-left: 3px solid var(--success);
-        }
+    .result p {
+      color: #cccccc;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
 
-        .opportunities-section .item-card::before {
-            background: linear-gradient(90deg, var(--success), transparent);
-        }
+    .result a {
+      display: inline-block;
+      background: #1cabb0;
+      color: #0a0a0a;
+      padding: 14px 32px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
 
-        .cta-section {
-            margin-top: 5rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 3rem 2rem;
-            text-align: center;
-            animation: slideUp 0.8s ease-out;
-        }
+    .result a:hover {
+      background: #15959b;
+    }
 
-        .cta-badge {
-            display: inline-block;
-            background: rgba(28, 171, 176, 0.15);
-            color: var(--accent);
-            padding: 0.5rem 1.2rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--accent);
-        }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
 
-        .cta-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
+      .buttons {
+        flex-direction: column;
+      }
 
-        .cta-description {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.8;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: var(--accent);
-            color: var(--bg);
-            padding: 1rem 3rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            letter-spacing: 0.05em;
-            transition: all 0.3s ease;
-            border: 2px solid var(--accent);
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .cta-button:hover {
-            background: transparent;
-            color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(28, 171, 176, 0.3);
-        }
-
-        .footer-note {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .diagnostic-title {
-                font-size: 1.8rem;
-            }
-
-            .section-title {
-                font-size: 1.4rem;
-            }
-
-            .items-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-title {
-                font-size: 1.5rem;
-            }
-
-            .container {
-                padding: 2rem 1rem;
-            }
-        }
-    </style>
+      button.prev {
+        flex: 1;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <a href="index.html" class="header-logo">método<span>peak</span></a>
+  <div class="container">
+    <h1>Diagnóstico <span class="accent">PEAK</span></h1>
+    <div class="progress">
+      <div class="progress-bar"></div>
     </div>
 
-    <div class="container">
-        <div class="diagnostic-header">
-            <span class="progress-indicator">Análisis Completo</span>
-            <h1 class="diagnostic-title">Hola <strong id="userName">Dueño de Centro</strong>, aquí tienes tu diagnóstico</h1>
-            <p class="diagnostic-subtitle">Analizamos tu respuestas y hemos detectado lo siguiente:</p>
+    <form id="quizForm">
+      <!-- Pregunta 1 -->
+      <div class="question-group active-q" data-question="0">
+        <label>1. ¿Cuántos miembros activos tiene tu centro?</label>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q1" value="0-50">
+            <span>Menos de 50</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="50-150">
+            <span>50 a 150</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="150-300">
+            <span>150 a 300</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="300+">
+            <span>Más de 300</span>
+          </label>
         </div>
+      </div>
 
-        <!-- PROBLEMAS DETECTADOS -->
-        <section class="section problems-section">
-            <div class="section-header">
-                <h2 class="section-title">❌ Los 3 Problemas Detectados</h2>
-                <p class="section-subtitle">Esto es lo que está limitando el crecimiento de tu centro</p>
-            </div>
-            <div class="items-grid">
-                <div class="item-card">
-                    <span class="item-icon">⚙️</span>
-                    <h3 class="item-title">Falta de Sistema Operativo</h3>
-                    <p class="item-description">Tu centro funciona en base a las decisiones del día a día. Sin procesos estandarizados, todo depende de ti y el crecimiento se estanca.</p>
-                </div>
-                <div class="item-card">
-                    <span class="item-icon">🔗</span>
-                    <h3 class="item-title">Dependencia Total del Dueño</h3>
-                    <p class="item-description">Eres el cuello de botella. Tu equipo no tiene autonomía porque no existen procesos claros. Esto te impide escalar y genera sobrecarga.</p>
-                </div>
-                <div class="item-card">
-                    <span class="item-icon">📊</span>
-                    <h3 class="item-title">Sin Control del Negocio</h3>
-                    <p class="item-description">No tienes visibilidad real de márgenes, retención, CAC. Estás operando a ciegas sin datos que guíen decisiones estratégicas.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONSECUENCIAS SI NO ACTÚAS -->
-        <section class="section consequences-section">
-            <div class="section-header">
-                <h2 class="section-title">⚠️ Si No Actúas, Esto Es Lo Que Pasará</h2>
-                <p class="section-subtitle">Los costos reales de mantener el status quo</p>
-            </div>
-            <div class="items-grid">
-                <div class="item-card">
-                    <span class="item-icon">📉</span>
-                    <h3 class="item-title">Estancamiento Permanente</h3>
-                    <p class="item-description">Sin sistema no hay crecimiento predecible. Tu centro llegará a un techo y no podrá escalar. Tu competencia te pasará.</p>
-                </div>
-                <div class="item-card">
-                    <span class="item-icon">😫</span>
-                    <h3 class="item-title">Agotamiento del Dueño</h3>
-                    <p class="item-description">Trabajarás cada vez más horas pero verás menos resultados. El estrés crónico de estar en todo es insostenible a largo plazo.</p>
-                </div>
-                <div class="item-card">
-                    <span class="item-icon">💰</span>
-                    <h3 class="item-title">Pérdida de Oportunidades de Ingresos</h3>
-                    <p class="item-description">Sin procesos de retención ni captación optimizados, pierdes clientes constantemente. Tu margen operativo se reduce mes a mes.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- OPORTUNIDADES CON EL SISTEMA -->
-        <section class="section opportunities-section">
-            <div class="section-header">
-                <h2 class="section-title">✨ Esto Es Lo Que Podrías Lograr Con Método PEAK</h2>
-                <p class="section-subtitle">El potencial real de tu centro cuando está bien operado</p>
-            </div>
-            <div class="items-grid">
-                <div class="item-card">
-                    <span class="item-icon">🎯</span>
-                    <h3 class="item-title">Sistema Operativo Comprobado</h3>
-                    <p class="item-description">Implementar un sistema que ya ha funcionado en 50+ centros. Procesos claros, documentados y automatizados que funcionan sin ti.</p>
-                </div>
-                <div class="item-card">
-                    <span class="item-icon">👥</span>
-                    <h3 class="item-title">Equipo Autónomo y Productivo</h3>
-                    <p class="item-description">Tu equipo trabaja sin supervisión constante porque entienden el sistema. Liberan tu tiempo para lo que realmente importa.</p>
-                </div>
-                <div class="item-card">
-                    <span class="item-icon">📈</span>
-                    <h3 class="item-title">Crecimiento Predecible y Controlado</h3>
-                    <p class="item-description">Con datos en tiempo real tomas decisiones estratégicas. Escalas de forma rentable sin sacrificar márgenes ni la calidad del servicio.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA PRINCIPAL -->
-        <section class="cta-section">
-            <span class="cta-badge">Siguiente Paso</span>
-            <h2 class="cta-title">Tu sesión de consultoría personalizada</h2>
-            <p class="cta-description">
-                En 30 minutos analizaremos en profundidad tu centro, identificaremos las oportunidades más valiosas y te entregaremos un plan de acción claro y específico para transformar tu negocio.
-            </p>
-            <a href="https://calendly.com/mariamxperience/metodo-peak" class="cta-button">👉 Agendar Mi Consultoría Gratis</a>
-        </section>
-
-        <div class="footer-note">
-            <p>© 2025 Método PEAK. Transformando centros de fitness en negocios rentables.</p>
+      <!-- Pregunta 2 -->
+      <div class="question-group" data-question="1">
+        <label>2. ¿Cuál es tu mayor desafío actualmente?</label>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q2" value="retention">
+            <span>Retención de clientes</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q2" value="acquisition">
+            <span>Captar nuevos clientes</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q2" value="operations">
+            <span>Operación y procesos</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q2" value="profitability">
+            <span>Rentabilidad</span>
+          </label>
         </div>
+      </div>
+
+      <!-- Pregunta 3 -->
+      <div class="question-group" data-question="2">
+        <label>3. ¿Tienes un sistema para gestionar tu negocio?</label>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q3" value="no">
+            <span>No, lo manejo de forma manual</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q3" value="partial">
+            <span>Tengo algunas herramientas dispersas</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q3" value="yes">
+            <span>Sí, tengo un sistema integrado</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Pregunta 4 -->
+      <div class="question-group" data-question="3">
+        <label>4. ¿Cuánto inviertes mensualmente en tecnología?</label>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q4" value="0">
+            <span>$0 - No invierto</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="low">
+            <span>$1 - $100 USD</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="medium">
+            <span>$100 - $500 USD</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="high">
+            <span>Más de $500 USD</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Pregunta 5 -->
+      <div class="question-group" data-question="4">
+        <label>5. ¿Qué tan probable es que aumentes tu inversión en mejora operativa?</label>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q5" value="very-unlikely">
+            <span>Muy improbable</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q5" value="unlikely">
+            <span>Improbable</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q5" value="likely">
+            <span>Probable</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q5" value="very-likely">
+            <span>Muy probable</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Pregunta 6 -->
+      <div class="question-group" data-question="5">
+        <label>6. ¿Cuál es tu principal fuente de nuevos clientes?</label>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q6" value="referral">
+            <span>Referidos</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q6" value="social">
+            <span>Redes sociales</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q6" value="ads">
+            <span>Publicidad pagada</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q6" value="noone">
+            <span>No tengo un sistema</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Pregunta 7 -->
+      <div class="question-group" data-question="6">
+        <label>7. ¿Cuántos empleados tiene tu equipo?</label>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q7" value="solo">
+            <span>Solo yo</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q7" value="1-3">
+            <span>1 a 3 empleados</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q7" value="4-10">
+            <span>4 a 10 empleados</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q7" value="10+">
+            <span>Más de 10 empleados</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Pregunta 8 -->
+      <div class="question-group" data-question="7">
+        <label>8. ¿Cuál es tu objetivo principal para los próximos 6 meses?</label>
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q8" value="growth">
+            <span>Crecer en miembros</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q8" value="efficiency">
+            <span>Mejorar eficiencia</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q8" value="revenue">
+            <span>Aumentar ingresos</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="q8" value="scale">
+            <span>Escalar el negocio</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="prev" disabled>← Anterior</button>
+        <button type="button" class="next">Siguiente →</button>
+      </div>
+    </form>
+
+    <div class="result" id="result">
+      <h2>Tu Diagnóstico está listo</h2>
+      <p>Hemos analizado tus respuestas y estamos listos para mostrarte cómo Método PEAK puede transformar tu centro.</p>
+      <p style="margin-bottom: 40px; color: #999999; font-size: 0.95rem;">Agenda tu sesión de consultoría gratuita con Mariam.</p>
+      <a href="https://calendly.com/mariamxperience/metodo-peak" target="_blank">Agendar Sesión Gratuita</a>
     </div>
+  </div>
 
-    <script>
-        // Obtener nombre de la URL
-        var urlParams = new URLSearchParams(window.location.search);
-        var nombreUsuario = urlParams.get('nombre');
-        
-        if (nombreUsuario) {
-            var nombreDecodificado = decodeURIComponent(nombreUsuario);
-            document.getElementById('userName').textContent = nombreDecodificado.charAt(0).toUpperCase() + nombreDecodificado.slice(1);
-        }
-    </script>
+  <script>
+    let currentQuestion = 0;
+    const questions = document.querySelectorAll('.question-group');
+    const totalQuestions = questions.length;
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    const form = document.getElementById('quizForm');
+    const resultDiv = document.getElementById('result');
+    const progressBar = document.querySelector('.progress-bar');
+
+    function updateProgress() {
+      const percentage = ((currentQuestion + 1) / totalQuestions) * 100;
+      progressBar.style.width = percentage + '%';
+    }
+
+    function showQuestion(index) {
+      questions.forEach((q, i) => {
+        q.classList.remove('active-q');
+        if (i === index) q.classList.add('active-q');
+      });
+
+      prevBtn.disabled = index === 0;
+      if (index === totalQuestions - 1) {
+        nextBtn.innerHTML = 'Terminar';
+      } else {
+        nextBtn.innerHTML = 'Siguiente →';
+      }
+
+      updateProgress();
+    }
+
+    function isCurrentQuestionAnswered() {
+      const question = questions[currentQuestion];
+      const name = 'q' + (currentQuestion + 1);
+      return document.querySelector(`input[name="${name}"]:checked`);
+    }
+
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion(currentQuestion);
+      }
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!isCurrentQuestionAnswered()) {
+        alert('Por favor, selecciona una opción para continuar');
+        return;
+      }
+
+      if (currentQuestion < totalQuestions - 1) {
+        currentQuestion++;
+        showQuestion(currentQuestion);
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      form.style.display = 'none';
+      resultDiv.classList.add('active');
+    }
+
+    // Inicializar
+    showQuestion(0);
+  </script>
 </body>
 </html>
