@@ -211,8 +211,7 @@
                 
                 <!-- Tally Form Embed -->
                 <iframe 
-                    id="tallyFrame"
-                    src="https://tally.so/r/EkDvAr?transparentBackground=1" 
+                    src="https://tally.so/embed/EkDvAr?alignLeft=1&hideTitle=0&transparentBackground=1" 
                     width="100%" 
                     height="550" 
                     frameborder="0" 
@@ -227,10 +226,9 @@
     </div>
 
     <script>
-        // Fade-in suave para el iframe de Tally
         window.addEventListener('load', function() {
-            const frame = document.getElementById('tallyFrame');
-            frame.style.opacity = '1';
+            const frame = document.querySelector('iframe');
+            if (frame) frame.style.opacity = '1';
         });
     </script>
 </body>

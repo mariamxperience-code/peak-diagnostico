@@ -262,6 +262,13 @@ function showResults() {
   progressLabel.textContent = '✓ Diagnóstico completo';
 }
 
+// Obtener nombre de la URL y mostrar en saludo
+var urlParams = new URLSearchParams(window.location.search);
+var nombreUsuario = urlParams.get('nombre');
+if (nombreUsuario) {
+  document.getElementById('userGreeting').textContent = 'Hola ' + decodeURIComponent(nombreUsuario) + ', aquí está tu diagnóstico';
+}
+
 updateProgress();
 </script>
 </body>
