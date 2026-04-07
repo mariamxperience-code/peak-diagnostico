@@ -1,275 +1,439 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagnóstico Gratuito | Método PEAK</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0a0a0a; --surface: #1a1a1a; --card: #2a2a2a;
-    --accent: #20c997; --accent2: #1aa179;
-    --text: #ffffff; --muted: #b0b0b0; --border: #3a3a3a;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
-  
-  .header {
-    text-align: center; padding: 2rem 1rem 0;
-  }
-  .header-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem; color: var(--text); text-decoration: none;
-  }
-  .header-logo span { color: var(--accent); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Diagnóstico - Método PEAK</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #1a1a1a;
+            --card: #2a2a2a;
+            --accent: #1cabb0;
+            --text: #ffffff;
+            --text-muted: #b0b0b0;
+            --border: #3a3a3a;
+            --danger: #ff6b6b;
+            --success: #51cf66;
+        }
 
-  .quiz-section { padding: 3rem 1.5rem 5rem; background: var(--surface); min-height: 100vh; }
-  .quiz-wrap { max-width: 700px; margin: 0 auto; }
-  .quiz-header { text-align: center; margin-bottom: 2.5rem; }
-  .section-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
-  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 900; line-height: 1.15; }
-  .user-greeting { font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  .progress-bar-wrap { background: var(--border); border-radius: 100px; height: 3px; margin-bottom: 0.8rem; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 100px; width: 12.5%; transition: width 0.4s ease; }
-  .progress-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: right; margin-bottom: 2.5rem; }
+        html {
+            scroll-behavior: smooth;
+        }
 
-  .question-block { display: none; }
-  .question-block.active { display: block; }
-  .question-text { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; line-height: 1.3; margin-bottom: 2rem; }
-  .options-grid { display: flex; flex-direction: column; gap: 0.8rem; }
-  .option-btn { background: var(--card); border: 1px solid var(--border); padding: 1rem 1.2rem; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; text-align: left; cursor: pointer; border-radius: 2px; transition: border-color 0.15s, background 0.15s; display: flex; align-items: center; gap: 0.8rem; }
-  .option-btn::before { content: ''; display: block; flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--muted); transition: border-color 0.15s, background 0.15s; }
-  .option-btn:hover { border-color: var(--accent); background: #1a1a1a; }
-  .option-btn:hover::before { border-color: var(--accent); }
-  .option-btn.selected { border-color: var(--accent); background: rgba(45,212,191,0.06); }
-  .option-btn.selected::before { background: var(--accent); border-color: var(--accent); }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, #0d0d0d 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-  .quiz-nav { display: flex; justify-content: space-between; margin-top: 2rem; align-items: center; }
-  .quiz-nav-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 0.7rem 1.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.08em; cursor: pointer; border-radius: 2px; transition: border-color 0.15s, color 0.15s; }
-  .quiz-nav-btn:hover { border-color: var(--text); color: var(--text); }
-  .quiz-nav-btn.next-btn { background: var(--accent); border-color: var(--accent); color: #0a0a0a; font-weight: 500; }
-  .quiz-nav-btn.next-btn:hover { opacity: 0.85; }
-  .quiz-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .header {
+            padding: 2rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
 
-  .results-block { display: none; text-align: center; }
-  .results-block.active { display: block; }
-  .score-ring { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 2rem; position: relative; }
-  .score-ring::before { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 3px solid var(--accent); border-color: var(--accent) var(--accent) transparent transparent; transform: rotate(var(--deg, 45deg)); transition: transform 0.8s ease; }
-  .score-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; line-height: 1; }
-  .score-max { font-size: 0.75rem; color: var(--muted); }
-  .results-level { display: inline-block; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.3rem 0.8rem; border: 1px solid var(--accent); color: var(--accent); border-radius: 100px; margin-bottom: 1rem; }
-  .results-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 1rem; }
-  .results-text { font-size: 0.9rem; color: var(--muted); line-height: 1.7; max-width: 45ch; margin: 0 auto 2rem; }
-  .results-cta { display: inline-block; padding: 1rem 2.5rem; background: var(--accent); color: #0a0a0a; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: opacity 0.2s; }
-  .results-cta:hover { opacity: 0.88; }
-</style>
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .header-logo span {
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .diagnostic-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .diagnostic-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .diagnostic-title strong {
+            color: var(--accent);
+        }
+
+        .diagnostic-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .progress-indicator {
+            display: inline-block;
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .item-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .item-card:hover {
+            border-color: var(--accent);
+            background: var(--card);
+            transform: translateY(-4px);
+        }
+
+        .item-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .item-description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .problems-section .item-card {
+            border-left: 3px solid var(--danger);
+        }
+
+        .problems-section .item-card::before {
+            background: linear-gradient(90deg, var(--danger), transparent);
+        }
+
+        .consequences-section .item-card {
+            border-left: 3px solid var(--danger);
+        }
+
+        .consequences-section .item-card::before {
+            background: linear-gradient(90deg, var(--danger), transparent);
+        }
+
+        .opportunities-section .item-card {
+            border-left: 3px solid var(--success);
+        }
+
+        .opportunities-section .item-card::before {
+            background: linear-gradient(90deg, var(--success), transparent);
+        }
+
+        .cta-section {
+            margin-top: 5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .cta-badge {
+            display: inline-block;
+            background: rgba(28, 171, 176, 0.15);
+            color: var(--accent);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--accent);
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .cta-description {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 1rem 3rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(28, 171, 176, 0.3);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .diagnostic-title {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-title {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<div class="header">
-  <a href="index.html" class="header-logo">mx<span>perience</span>360</a>
-</div>
-
-<section class="quiz-section" id="diagnostico">
-  <div class="quiz-wrap">
-    <div class="quiz-header">
-      <span class="section-label">Diagnóstico gratuito</span>
-      <h2 class="section-title">8 preguntas que cambian<br>la perspectiva</h2>
-      <p class="user-greeting" id="userGreeting"></p>
+    <div class="header">
+        <a href="index.html" class="header-logo">método<span>peak</span></a>
     </div>
 
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
-    <p class="progress-label" id="progress-label">Pregunta 1 de 8</p>
+    <div class="container">
+        <div class="diagnostic-header">
+            <span class="progress-indicator">Análisis Completo</span>
+            <h1 class="diagnostic-title">Hola <strong id="userName">Dueño de Centro</strong>, aquí tienes tu diagnóstico</h1>
+            <p class="diagnostic-subtitle">Analizamos tu respuestas y hemos detectado lo siguiente:</p>
+        </div>
 
-    <div class="question-block active" data-q="0">
-      <p class="question-text">¿Tienes definido el margen neto mensual de tu centro?</p>
-      <div class="options-grid">
-        <button class="option-btn" data-val="1">No sé cuál es exactamente</button>
-        <button class="option-btn" data-val="2">Lo calculo, pero no de forma sistemática</button>
-        <button class="option-btn" data-val="3">Sí, lo reviso cada mes</button>
-        <button class="option-btn" data-val="4">Sí, y tomo decisiones en base a él</button>
-      </div>
+        <!-- PROBLEMAS DETECTADOS -->
+        <section class="section problems-section">
+            <div class="section-header">
+                <h2 class="section-title">❌ Los 3 Problemas Detectados</h2>
+                <p class="section-subtitle">Esto es lo que está limitando el crecimiento de tu centro</p>
+            </div>
+            <div class="items-grid">
+                <div class="item-card">
+                    <span class="item-icon">⚙️</span>
+                    <h3 class="item-title">Falta de Sistema Operativo</h3>
+                    <p class="item-description">Tu centro funciona en base a las decisiones del día a día. Sin procesos estandarizados, todo depende de ti y el crecimiento se estanca.</p>
+                </div>
+                <div class="item-card">
+                    <span class="item-icon">🔗</span>
+                    <h3 class="item-title">Dependencia Total del Dueño</h3>
+                    <p class="item-description">Eres el cuello de botella. Tu equipo no tiene autonomía porque no existen procesos claros. Esto te impide escalar y genera sobrecarga.</p>
+                </div>
+                <div class="item-card">
+                    <span class="item-icon">📊</span>
+                    <h3 class="item-title">Sin Control del Negocio</h3>
+                    <p class="item-description">No tienes visibilidad real de márgenes, retención, CAC. Estás operando a ciegas sin datos que guíen decisiones estratégicas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONSECUENCIAS SI NO ACTÚAS -->
+        <section class="section consequences-section">
+            <div class="section-header">
+                <h2 class="section-title">⚠️ Si No Actúas, Esto Es Lo Que Pasará</h2>
+                <p class="section-subtitle">Los costos reales de mantener el status quo</p>
+            </div>
+            <div class="items-grid">
+                <div class="item-card">
+                    <span class="item-icon">📉</span>
+                    <h3 class="item-title">Estancamiento Permanente</h3>
+                    <p class="item-description">Sin sistema no hay crecimiento predecible. Tu centro llegará a un techo y no podrá escalar. Tu competencia te pasará.</p>
+                </div>
+                <div class="item-card">
+                    <span class="item-icon">😫</span>
+                    <h3 class="item-title">Agotamiento del Dueño</h3>
+                    <p class="item-description">Trabajarás cada vez más horas pero verás menos resultados. El estrés crónico de estar en todo es insostenible a largo plazo.</p>
+                </div>
+                <div class="item-card">
+                    <span class="item-icon">💰</span>
+                    <h3 class="item-title">Pérdida de Oportunidades de Ingresos</h3>
+                    <p class="item-description">Sin procesos de retención ni captación optimizados, pierdes clientes constantemente. Tu margen operativo se reduce mes a mes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPORTUNIDADES CON EL SISTEMA -->
+        <section class="section opportunities-section">
+            <div class="section-header">
+                <h2 class="section-title">✨ Esto Es Lo Que Podrías Lograr Con Método PEAK</h2>
+                <p class="section-subtitle">El potencial real de tu centro cuando está bien operado</p>
+            </div>
+            <div class="items-grid">
+                <div class="item-card">
+                    <span class="item-icon">🎯</span>
+                    <h3 class="item-title">Sistema Operativo Comprobado</h3>
+                    <p class="item-description">Implementar un sistema que ya ha funcionado en 50+ centros. Procesos claros, documentados y automatizados que funcionan sin ti.</p>
+                </div>
+                <div class="item-card">
+                    <span class="item-icon">👥</span>
+                    <h3 class="item-title">Equipo Autónomo y Productivo</h3>
+                    <p class="item-description">Tu equipo trabaja sin supervisión constante porque entienden el sistema. Liberan tu tiempo para lo que realmente importa.</p>
+                </div>
+                <div class="item-card">
+                    <span class="item-icon">📈</span>
+                    <h3 class="item-title">Crecimiento Predecible y Controlado</h3>
+                    <p class="item-description">Con datos en tiempo real tomas decisiones estratégicas. Escalas de forma rentable sin sacrificar márgenes ni la calidad del servicio.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA PRINCIPAL -->
+        <section class="cta-section">
+            <span class="cta-badge">Siguiente Paso</span>
+            <h2 class="cta-title">Tu sesión de consultoría personalizada</h2>
+            <p class="cta-description">
+                En 30 minutos analizaremos en profundidad tu centro, identificaremos las oportunidades más valiosas y te entregaremos un plan de acción claro y específico para transformar tu negocio.
+            </p>
+            <a href="https://calendly.com/mariamxperience/metodo-peak" class="cta-button">👉 Agendar Mi Consultoría Gratis</a>
+        </section>
+
+        <div class="footer-note">
+            <p>© 2025 Método PEAK. Transformando centros de fitness en negocios rentables.</p>
+        </div>
     </div>
-    <div class="question-block" data-q="1">
-      <p class="question-text">¿Cuál es tu principal canal de captación de nuevos clientes?</p>
-      <div class="options-grid">
-        <button class="option-btn" data-val="1">El boca a boca exclusivamente</button>
-        <button class="option-btn" data-val="2">Redes sociales sin estrategia clara</button>
-        <button class="option-btn" data-val="3">Tengo algunos canales activos</button>
-        <button class="option-btn" data-val="4">Sistema de captación definido y medible</button>
-      </div>
-    </div>
-    <div class="question-block" data-q="2">
-      <p class="question-text">¿Tu centro puede funcionar bien sin tu presencia diaria?</p>
-      <div class="options-grid">
-        <button class="option-btn" data-val="1">No, todo depende de mí</button>
-        <button class="option-btn" data-val="2">Más o menos, con muchos WhatsApps</button>
-        <button class="option-btn" data-val="3">Parcialmente, hay procesos documentados</button>
-        <button class="option-btn" data-val="4">Sí, el equipo funciona de forma autónoma</button>
-      </div>
-    </div>
-    <div class="question-block" data-q="3">
-      <p class="question-text">¿Cómo describirías la retención de tus clientes?</p>
-      <div class="options-grid">
-        <button class="option-btn" data-val="1">Mucha rotación, no sé por qué se van</button>
-        <button class="option-btn" data-val="2">Alta, pero tampoco la mido</button>
-        <button class="option-btn" data-val="3">La mido y tengo alguna iniciativa de fidelización</button>
-        <button class="option-btn" data-val="4">Excelente, con sistema de fidelización activo</button>
-      </div>
-    </div>
-    <div class="question-block" data-q="4">
-      <p class="question-text">¿Tienes una propuesta de valor diferenciada de la competencia?</p>
-      <div class="options-grid">
-        <button class="option-btn" data-val="1">No, competimos básicamente en precio</button>
-        <button class="option-btn" data-val="2">Algo, pero no está bien comunicada</button>
-        <button class="option-btn" data-val="3">Sí, aunque podría estar más definida</button>
-        <button class="option-btn" data-val="4">Muy clara, y nuestros clientes lo perciben</button>
-      </div>
-    </div>
-    <div class="question-block" data-q="5">
-      <p class="question-text">¿Cuántos años lleva abierto tu centro?</p>
-      <div class="options-grid">
-        <button class="option-btn" data-val="1">Menos de 1 año</button>
-        <button class="option-btn" data-val="2">Entre 1 y 3 años</button>
-        <button class="option-btn" data-val="3">Entre 3 y 7 años</button>
-        <button class="option-btn" data-val="4">Más de 7 años</button>
-      </div>
-    </div>
-    <div class="question-block" data-q="6">
-      <p class="question-text">¿Cuántos empleados o colaboradores tiene tu centro?</p>
-      <div class="options-grid">
-        <button class="option-btn" data-val="1">Solo yo (o con autónomos puntuales)</button>
-        <button class="option-btn" data-val="2">2 a 4 personas</button>
-        <button class="option-btn" data-val="3">5 a 10 personas</button>
-        <button class="option-btn" data-val="4">Más de 10 personas</button>
-      </div>
-    </div>
-    <div class="question-block" data-q="7">
-      <p class="question-text">¿Qué es lo que más te frena para crecer ahora mismo?</p>
-      <div class="options-grid">
-        <button class="option-btn" data-val="1">Falta de tiempo — estoy desbordado/a</button>
-        <button class="option-btn" data-val="2">No sé cómo captar más clientes</button>
-        <button class="option-btn" data-val="3">Problemas con el equipo o la operación</button>
-        <button class="option-btn" data-val="4">Falta de estrategia y visión clara</button>
-      </div>
-    </div>
 
-    <div class="results-block" id="quiz-results">
-      <div class="score-ring" id="score-ring">
-        <span class="score-num" id="score-display">0</span>
-        <span class="score-max">de 32</span>
-      </div>
-      <div class="results-level" id="results-level">Calculando…</div>
-      <h3 class="results-title" id="results-title">—</h3>
-      <p class="results-text" id="results-text">—</p>
-      <p style="font-size:0.82rem;color:#888880;margin-bottom:1.2rem;line-height:1.5;">
-        Tu diagnóstico está listo. El siguiente paso es una sesión gratuita de 30 minutos conmigo para ver cómo aplicarlo en tu centro.
-      </p>
-      <a href="https://calendly.com/mariamxperience/metodo-peak" target="_blank" class="results-cta">
-        📅 Agendar mi sesión gratuita →
-      </a>
-      <p style="font-size:0.75rem;color:#555;margin-top:0.5rem;">Gratis · 30 minutos · Sin compromiso</p>
-    </div>
-
-    <div class="quiz-nav" id="quiz-nav">
-      <button class="quiz-nav-btn" id="prev-btn" disabled>← Anterior</button>
-      <button class="quiz-nav-btn next-btn" id="next-btn" disabled>Siguiente →</button>
-    </div>
-  </div>
-</section>
-
-<script>
-const questions = document.querySelectorAll('.question-block');
-const nextBtn = document.getElementById('next-btn');
-const prevBtn = document.getElementById('prev-btn');
-const progressFill = document.getElementById('progress-fill');
-const progressLabel = document.getElementById('progress-label');
-const quizNav = document.getElementById('quiz-nav');
-const quizResults = document.getElementById('quiz-results');
-
-let currentQ = 0;
-let answers = new Array(8).fill(null);
-
-// Cargar datos del usuario
-window.addEventListener('DOMContentLoaded', function() {
-  const userData = JSON.parse(localStorage.getItem('peak_usuario') || '{}');
-  if (userData.nombre) {
-    document.getElementById('userGreeting').textContent = `Hola ${userData.nombre}, bienvenido a tu diagnóstico`;
-  }
-});
-
-function updateProgress() {
-  progressFill.style.width = ((currentQ + 1) / 8 * 100) + '%';
-  progressLabel.textContent = 'Pregunta ' + (currentQ + 1) + ' de 8';
-}
-
-function showQuestion(idx) {
-  questions.forEach(q => q.classList.remove('active'));
-  if (idx < 8) {
-    questions[idx].classList.add('active');
-    quizResults.classList.remove('active');
-    quizNav.style.display = 'flex';
-  } else {
-    quizResults.classList.add('active');
-    quizNav.style.display = 'none';
-    showResults();
-  }
-  prevBtn.disabled = idx === 0;
-  nextBtn.disabled = answers[idx] === null;
-  updateProgress();
-}
-
-questions.forEach(function(q, qi) {
-  q.querySelectorAll('.option-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      q.querySelectorAll('.option-btn').forEach(function(b) { b.classList.remove('selected'); });
-      btn.classList.add('selected');
-      answers[qi] = parseInt(btn.dataset.val);
-      nextBtn.disabled = false;
-    });
-  });
-});
-
-nextBtn.addEventListener('click', function() {
-  if (answers[currentQ] === null) return;
-  currentQ++;
-  showQuestion(currentQ);
-});
-prevBtn.addEventListener('click', function() {
-  if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
-});
-
-const levels = [
-  { min: 8, max: 15, label: 'Nivel Base', title: 'Tu centro necesita cimientos sólidos', text: 'Tienes el potencial, pero aún no tienes los sistemas básicos que hacen crecer un negocio. El Método PEAK empieza exactamente aquí.' },
-  { min: 16, max: 22, label: 'Nivel Crecimiento', title: 'Estás en el momento clave', text: 'Tienes la base pero hay fricciones importantes que frenan tu rentabilidad. Pequeños cambios estructurales generarán grandes resultados.' },
-  { min: 23, max: 28, label: 'Nivel Consolidación', title: 'Buen trabajo. Hora de escalar', text: 'Tu negocio funciona bien. El siguiente paso es construir sistemas que te permitan crecer sin trabajar más horas.' },
-  { min: 29, max: 32, label: 'Nivel Referente', title: 'Eres un referente en tu sector', text: 'Tienes un negocio sólido. Te acompañamos a definir la estrategia de los próximos 3 años y abrir nuevas líneas de ingresos.' }
-];
-
-function showResults() {
-  const total = answers.reduce(function(a, b) { return a + (b || 0); }, 0);
-  document.getElementById('score-display').textContent = total;
-  const level = levels.find(function(l) { return total >= l.min && total <= l.max; }) || levels[0];
-  document.getElementById('results-level').textContent = level.label;
-  document.getElementById('results-title').textContent = level.title;
-  document.getElementById('results-text').textContent = level.text;
-  const deg = 45 + (total / 32) * 270;
-  document.getElementById('score-ring').style.setProperty('--deg', deg + 'deg');
-  progressFill.style.width = '100%';
-  progressLabel.textContent = '✓ Diagnóstico completo';
-}
-
-// Obtener nombre de la URL y mostrar en saludo
-var urlParams = new URLSearchParams(window.location.search);
-var nombreUsuario = urlParams.get('nombre');
-if (nombreUsuario) {
-  document.getElementById('userGreeting').textContent = 'Hola ' + decodeURIComponent(nombreUsuario) + ', aquí está tu diagnóstico';
-}
-
-updateProgress();
-</script>
+    <script>
+        // Obtener nombre de la URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var nombreUsuario = urlParams.get('nombre');
+        
+        if (nombreUsuario) {
+            var nombreDecodificado = decodeURIComponent(nombreUsuario);
+            document.getElementById('userName').textContent = nombreDecodificado.charAt(0).toUpperCase() + nombreDecodificado.slice(1);
+        }
+    </script>
 </body>
 </html>
