@@ -17,14 +17,12 @@
       color: #ffffff;
       padding: 20px;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .container {
       width: 100%;
       max-width: 700px;
+      margin: 0 auto;
       text-align: center;
     }
 
@@ -32,29 +30,121 @@
       font-size: 2.8rem;
       margin-bottom: 15px;
       font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
     }
 
     .accent {
       color: #1cabb0;
     }
 
-    .subtitle {
-      font-size: 1.1rem;
+    h2 {
+      font-size: 1.6rem;
+      margin: 50px 0 30px 0;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.3px;
+    }
+
+    .section-block {
+      background: #1a1a1a;
+      border: 1px solid #333333;
+      border-radius: 8px;
+      padding: 40px 30px;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    .section-block p {
+      font-size: 1.05rem;
       color: #cccccc;
-      margin-bottom: 50px;
+      margin-bottom: 25px;
       line-height: 1.6;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .list-items {
+      list-style: none;
+      margin-bottom: 0;
+    }
+
+    .list-items li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      color: #cccccc;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .list-items li:before {
+      content: "✓";
+      color: #1cabb0;
+      font-weight: 700;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .list-items li:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      font-size: 0.9rem;
+      color: #1cabb0;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 50px 0 20px 0;
+      display: block;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 16px 45px;
+      background: #1cabb0;
+      color: #0a0a0a;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease;
+      letter-spacing: 0.3px;
+      margin: 30px 0 50px 0;
+    }
+
+    .cta-button:hover {
+      background: #15959b;
     }
 
     .tally-container {
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(28, 171, 176, 0.1);
+      background: #0a0a0a;
+      padding: 0;
+      margin: 0;
     }
 
     iframe {
       width: 100%;
       border: none;
       display: block;
+      background: #0a0a0a;
+      clip-path: inset(0 0 80px 0);
+    }
+
+    .form-footer {
+      font-size: 0.8rem;
+      color: #999999;
+      margin-top: 20px;
+      text-align: center;
+      font-style: italic;
     }
 
     @media (max-width: 768px) {
@@ -62,7 +152,26 @@
         font-size: 2rem;
       }
 
-      .subtitle {
+      h2 {
+        font-size: 1.3rem;
+        margin: 40px 0 25px 0;
+      }
+
+      .section-block {
+        padding: 30px 20px;
+        margin-bottom: 30px;
+      }
+
+      .section-block p {
+        font-size: 1rem;
+      }
+
+      .list-items li {
+        font-size: 0.95rem;
+      }
+
+      .cta-button {
+        padding: 14px 35px;
         font-size: 1rem;
       }
     }
@@ -71,10 +180,48 @@
 <body>
   <div class="container">
     <h1>Método <span class="accent">PEAK</span></h1>
-    <p class="subtitle">Obtén tu diagnóstico gratuito y descubre cómo optimizar tu centro de fitness</p>
+    
+    <!-- Sección: Qué es Método PEAK -->
+    <div class="section-block">
+      <h2 style="text-align: center; margin-top: 0;">Tu centro no necesita más clientes. Necesita un sistema</h2>
+      <p>La mayoría de dueños se dedican a operar día a día. Sin procesos ni estructura, el crecimiento es imposible. Método PEAK es el sistema operativo que ya ha transformado 50+ centros de fitness en negocios escalables y rentables.</p>
+      
+      <h3 style="font-size: 1.2rem; margin: 30px 0 20px 0; color: #1cabb0; text-align: center; font-weight: 700;">Qué es Método PEAK</h3>
+      <ul class="list-items">
+        <li>Gestión completa de operaciones en un solo lugar</li>
+        <li>Automatización de tu embudo de ventas</li>
+        <li>Reportes inteligentes de tu negocio</li>
+        <li>Sistema probado con 50+ centros</li>
+        <li>Soporte exclusivo en español</li>
+      </ul>
+    </div>
+
+    <!-- Sección: Lo que conseguirías -->
+    <div class="section-block">
+      <h3 style="font-size: 1.2rem; margin: 0 0 20px 0; color: #1cabb0; text-align: center; font-weight: 700;">Lo que conseguirías aplicando Método PEAK</h3>
+      <ul class="list-items">
+        <li>Reducir horas administrativas en un 60%</li>
+        <li>Aumentar la retención de miembros</li>
+        <li>Automatizar la captación de clientes</li>
+        <li>Tomar decisiones basadas en datos</li>
+        <li>Escalar tu centro sin caos operativo</li>
+      </ul>
+    </div>
+
+    <!-- CTA Button -->
+    <button class="cta-button" onclick="document.querySelector('.tally-container').scrollIntoView({behavior: 'smooth'});">
+      Quiero mi diagnóstico gratis →
+    </button>
+
+    <!-- Formulario Tally -->
+    <span class="form-label">Cuéntanos sobre tu centro</span>
     
     <div class="tally-container">
       <iframe src="https://tally.so/embed/EkDvAr?hideTitle=0&transparentBackground=1" width="100%" height="700" frameborder="0" marginheight="0" marginwidth="0" title="Diagnóstico PEAK" loading="lazy" allowfullscreen allowtransparency="true"></iframe>
+    </div>
+
+    <div class="form-footer">
+      Tus datos están protegidos. Tu privacidad es nuestra prioridad.
     </div>
   </div>
 </body>

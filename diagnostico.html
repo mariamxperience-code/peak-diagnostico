@@ -32,6 +32,7 @@
       margin-bottom: 30px;
       text-align: center;
       font-weight: 700;
+      letter-spacing: -0.3px;
     }
 
     .accent {
@@ -73,18 +74,21 @@
     }
 
     .question-number {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #1cabb0;
       display: block;
       margin-bottom: 10px;
-      font-weight: 600;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .question label {
       display: block;
-      font-size: 1.15rem;
-      font-weight: 600;
+      font-size: 1.2rem;
+      font-weight: 700;
       margin-bottom: 20px;
+      letter-spacing: -0.2px;
     }
 
     .options {
@@ -122,11 +126,12 @@
       flex: 1;
       cursor: pointer;
       font-size: 1rem;
+      font-weight: 500;
     }
 
     .option-wrapper input[type="radio"]:checked + .option-text {
       color: #1cabb0;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .controls {
@@ -137,13 +142,14 @@
     }
 
     button {
-      padding: 12px 24px;
+      padding: 14px 24px;
       border: none;
       border-radius: 6px;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
+      letter-spacing: 0.3px;
     }
 
     button.prev {
@@ -173,7 +179,6 @@
 
     .result-section {
       display: none;
-      text-align: center;
       animation: fadeIn 0.4s ease;
     }
 
@@ -182,22 +187,45 @@
     }
 
     .result-section h2 {
-      font-size: 2rem;
+      font-size: 1.9rem;
       color: #1cabb0;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
     }
 
-    .result-section p {
-      font-size: 1.05rem;
+    .result-message {
+      background: #1a1a1a;
+      border: 1px solid #333333;
+      border-radius: 8px;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .result-message p {
+      font-size: 1.1rem;
       color: #cccccc;
-      margin-bottom: 15px;
-      line-height: 1.6;
+      line-height: 1.7;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .score-badge {
+      display: inline-block;
+      background: #1cabb0;
+      color: #0a0a0a;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 20px;
+      letter-spacing: 0.3px;
     }
 
     .cta-button {
       display: inline-block;
       margin-top: 30px;
-      padding: 16px 40px;
+      padding: 16px 45px;
       background: #1cabb0;
       color: #0a0a0a;
       text-decoration: none;
@@ -205,6 +233,7 @@
       font-weight: 700;
       font-size: 1.1rem;
       transition: background 0.2s ease;
+      letter-spacing: 0.3px;
     }
 
     .cta-button:hover {
@@ -216,12 +245,28 @@
         font-size: 1.8rem;
       }
 
+      .question label {
+        font-size: 1.1rem;
+      }
+
       .controls {
         flex-direction: column;
       }
 
       button.prev {
         min-width: auto;
+      }
+
+      .result-section h2 {
+        font-size: 1.5rem;
+      }
+
+      .result-message {
+        padding: 20px;
+      }
+
+      .result-message p {
+        font-size: 1rem;
       }
     }
   </style>
@@ -240,19 +285,19 @@
           <label>¿Cuántos miembros activos tiene tu centro?</label>
           <div class="options">
             <label class="option-wrapper">
-              <input type="radio" name="q1" value="a">
+              <input type="radio" name="q1" value="1">
               <span class="option-text">Menos de 50 miembros</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q1" value="b">
+              <input type="radio" name="q1" value="2">
               <span class="option-text">50 a 150 miembros</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q1" value="c">
+              <input type="radio" name="q1" value="3">
               <span class="option-text">150 a 300 miembros</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q1" value="d">
+              <input type="radio" name="q1" value="4">
               <span class="option-text">Más de 300 miembros</span>
             </label>
           </div>
@@ -265,19 +310,19 @@
           <label>¿Cuál es tu mayor desafío operativo?</label>
           <div class="options">
             <label class="option-wrapper">
-              <input type="radio" name="q2" value="a">
+              <input type="radio" name="q2" value="1">
               <span class="option-text">Retención de miembros</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q2" value="b">
+              <input type="radio" name="q2" value="2">
               <span class="option-text">Captar nuevos miembros</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q2" value="c">
+              <input type="radio" name="q2" value="3">
               <span class="option-text">Operación y procesos</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q2" value="d">
+              <input type="radio" name="q2" value="4">
               <span class="option-text">Rentabilidad</span>
             </label>
           </div>
@@ -290,15 +335,15 @@
           <label>¿Tienes un sistema integrado para gestionar tu negocio?</label>
           <div class="options">
             <label class="option-wrapper">
-              <input type="radio" name="q3" value="a">
+              <input type="radio" name="q3" value="1">
               <span class="option-text">No, todo es manual</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q3" value="b">
+              <input type="radio" name="q3" value="2">
               <span class="option-text">Tengo herramientas dispersas</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q3" value="c">
+              <input type="radio" name="q3" value="3">
               <span class="option-text">Sí, tengo un sistema integrado</span>
             </label>
           </div>
@@ -311,20 +356,20 @@
           <label>¿Cuánto inviertes mensualmente en tecnología?</label>
           <div class="options">
             <label class="option-wrapper">
-              <input type="radio" name="q4" value="a">
-              <span class="option-text">$0 - No invierto</span>
+              <input type="radio" name="q4" value="1">
+              <span class="option-text">0€ - No invierto</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q4" value="b">
-              <span class="option-text">$1 - $100 USD</span>
+              <input type="radio" name="q4" value="2">
+              <span class="option-text">1€ - 100€</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q4" value="c">
-              <span class="option-text">$100 - $500 USD</span>
+              <input type="radio" name="q4" value="3">
+              <span class="option-text">100€ - 500€</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q4" value="d">
-              <span class="option-text">Más de $500 USD</span>
+              <input type="radio" name="q4" value="4">
+              <span class="option-text">Más de 500€</span>
             </label>
           </div>
         </div>
@@ -336,19 +381,19 @@
           <label>¿Qué tan probable es que inviertas en mejorar operaciones?</label>
           <div class="options">
             <label class="option-wrapper">
-              <input type="radio" name="q5" value="a">
+              <input type="radio" name="q5" value="1">
               <span class="option-text">Muy improbable</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q5" value="b">
+              <input type="radio" name="q5" value="2">
               <span class="option-text">Improbable</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q5" value="c">
+              <input type="radio" name="q5" value="3">
               <span class="option-text">Probable</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q5" value="d">
+              <input type="radio" name="q5" value="4">
               <span class="option-text">Muy probable</span>
             </label>
           </div>
@@ -361,19 +406,19 @@
           <label>¿Cuál es tu principal fuente de nuevos clientes?</label>
           <div class="options">
             <label class="option-wrapper">
-              <input type="radio" name="q6" value="a">
+              <input type="radio" name="q6" value="1">
               <span class="option-text">Referidos</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q6" value="b">
+              <input type="radio" name="q6" value="2">
               <span class="option-text">Redes sociales</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q6" value="c">
+              <input type="radio" name="q6" value="3">
               <span class="option-text">Publicidad pagada</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q6" value="d">
+              <input type="radio" name="q6" value="4">
               <span class="option-text">No tengo un sistema definido</span>
             </label>
           </div>
@@ -386,19 +431,19 @@
           <label>¿Cuántos empleados tiene tu equipo?</label>
           <div class="options">
             <label class="option-wrapper">
-              <input type="radio" name="q7" value="a">
+              <input type="radio" name="q7" value="1">
               <span class="option-text">Solo yo</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q7" value="b">
+              <input type="radio" name="q7" value="2">
               <span class="option-text">1 a 3 empleados</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q7" value="c">
+              <input type="radio" name="q7" value="3">
               <span class="option-text">4 a 10 empleados</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q7" value="d">
+              <input type="radio" name="q7" value="4">
               <span class="option-text">Más de 10 empleados</span>
             </label>
           </div>
@@ -411,19 +456,19 @@
           <label>¿Cuál es tu objetivo principal para los próximos 6 meses?</label>
           <div class="options">
             <label class="option-wrapper">
-              <input type="radio" name="q8" value="a">
+              <input type="radio" name="q8" value="1">
               <span class="option-text">Crecer en cantidad de miembros</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q8" value="b">
+              <input type="radio" name="q8" value="2">
               <span class="option-text">Mejorar la eficiencia operativa</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q8" value="c">
+              <input type="radio" name="q8" value="3">
               <span class="option-text">Aumentar ingresos por miembro</span>
             </label>
             <label class="option-wrapper">
-              <input type="radio" name="q8" value="d">
+              <input type="radio" name="q8" value="4">
               <span class="option-text">Escalar a múltiples centros</span>
             </label>
           </div>
@@ -438,8 +483,7 @@
 
     <div class="result-section" id="result">
       <h2>¡Diagnóstico Completado!</h2>
-      <p>Hemos analizado tus respuestas y estamos listos para mostrarte cómo Método PEAK puede transformar tu centro.</p>
-      <p style="font-size: 0.95rem; color: #999999; margin-bottom: 30px;">Agenda tu sesión de consultoría gratuita con Mariam para conocer tu plan personalizado.</p>
+      <div class="result-message" id="resultMessage"></div>
       <a href="https://calendly.com/mariamxperience/metodo-peak" class="cta-button" target="_blank">Agendar Sesión Gratuita</a>
     </div>
   </div>
@@ -450,10 +494,26 @@
     const prevBtn = document.querySelector('button.prev');
     const nextBtn = document.querySelector('button.next');
     const result = document.getElementById('result');
+    const resultMessage = document.getElementById('resultMessage');
     const progressFill = document.querySelector('.progress-fill');
 
     let current = 0;
     const total = sections.length;
+
+    const scoreMessages = {
+      bajo: {
+        title: 'Tu Centro: Estado Crítico',
+        message: 'Tu centro no tiene un sistema definido. Estás operando en modo supervivencia. Sin procesos, es imposible escalar. Necesitas una estructura urgentemente.'
+      },
+      medio: {
+        title: 'Tu Centro: Potencial Sin Estructura',
+        message: 'Tienes bases, pero sin estructura sólida. El crecimiento es inestable. Hay iniciativas, pero falta integración. Necesitas un sistema operativo real.'
+      },
+      alto: {
+        title: 'Tu Centro: Listo Para Escalar',
+        message: 'Tienes potencial real de escalar, pero necesitas optimización y un sistema. Ya has dado pasos importantes. El siguiente nivel está al alcance con la estrategia correcta.'
+      }
+    };
 
     function updateUI() {
       sections.forEach((s, i) => {
@@ -461,12 +521,42 @@
       });
       progressFill.style.width = ((current + 1) / total * 100) + '%';
       prevBtn.disabled = current === 0;
-      nextBtn.textContent = current === total - 1 ? 'Enviar →' : 'Siguiente →';
+      nextBtn.textContent = current === total - 1 ? 'Ver Resultado →' : 'Siguiente →';
     }
 
     function isAnswered() {
       const name = 'q' + (current + 1);
       return document.querySelector(`input[name="${name}"]:checked`);
+    }
+
+    function calculateScore() {
+      let score = 0;
+      for (let i = 1; i <= total; i++) {
+        const checked = document.querySelector(`input[name="q${i}"]:checked`);
+        if (checked) {
+          score += parseInt(checked.value);
+        }
+      }
+      return score;
+    }
+
+    function getScoreLevel(score) {
+      if (score >= 8 && score <= 16) return 'bajo';
+      if (score >= 17 && score <= 24) return 'medio';
+      if (score >= 25 && score <= 32) return 'alto';
+      return 'medio';
+    }
+
+    function showResult() {
+      const score = calculateScore();
+      const level = getScoreLevel(score);
+      const msg = scoreMessages[level];
+      
+      resultMessage.innerHTML = `
+        <p><strong>${msg.title}</strong></p>
+        <p style="margin-top: 15px;">${msg.message}</p>
+        <div class="score-badge">Puntuación: ${score}/32</div>
+      `;
     }
 
     prevBtn.addEventListener('click', () => {
@@ -486,6 +576,7 @@
         updateUI();
       } else {
         form.style.display = 'none';
+        showResult();
         result.classList.add('active');
       }
     });
